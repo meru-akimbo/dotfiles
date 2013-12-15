@@ -14,7 +14,10 @@ Bundle 'Shougo/neosnippet'
 Bundle 'thinca/vim-quickrun'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
-Bundle 'vim-coffee-script' 
+Bundle 'vim-coffee-script'
+Bundle 'davidhalter/jedi-vim'
+Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'Shougo/vimshell.vim'
 
 " js BDDツール
 Bundle 'claco/jasmine.vim'
@@ -24,7 +27,6 @@ Bundle 'nathanaelkane/vim-indent-guides'
 filetype indent plugin on
 
 set encoding=utf-8
-
 syntax on
 set wildmenu
 set showcmd
@@ -42,9 +44,24 @@ set confirm
 set visualbell
 set t_vb=
 
-set shiftwidth=2
-set softtabstop=2
+set shiftwidth=4
+set softtabstop=4
 set expandtab
+set list
+set listchars=tab:»-,trail:-,eol:-,extends:»,precedes:«,nbsp:%
+
+autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+autocmd BufWritePre * :call RTrim()
+
+function! RTrim()
+  let s:cursor = getpos(".")
+  if &filetype != "markdown"
+    %s/\s\+$//e
+  endif
+  call setpos(".", s:cursor)
+endfunction
+
+
 autocmd FileType * setlocal formatoptions-=ro
 setlocal formatoptions-=r
 setlocal formatoptions-=o
