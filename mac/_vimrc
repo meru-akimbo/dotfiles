@@ -9,7 +9,7 @@ Bundle 'scrooloose/syntastic'
 
 Bundle 'petdance/vim-perl'
 Bundle 'hotchpotch/perldoc-vim'
-Bundle 'Shougo/neocompl'
+Bundle 'Shougo/neocomplete.vim'
 Bundle 'Shougo/neosnippet'
 Bundle 'thinca/vim-quickrun'
 Bundle 'vim-ruby/vim-ruby'
@@ -18,12 +18,14 @@ Bundle 'vim-coffee-script'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'Shougo/vimshell.vim'
-Bundle 'vim2hs'
 Bundle 'thinca/vim-localrc'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'vim-jp/vim-go-extra'
 Bundle 'fatih/vim-go'
 Bundle 'Shougo/neosnippet-snippets'
+
+Bundle 'Shougo/vimfiler'
+Bundle 'Shougo/unite.vim'
 
 " js BDDツール
 Bundle 'claco/jasmine.vim'
@@ -80,6 +82,16 @@ setlocal formatoptions-=o
 let g:acp_enableAtStartup = 0
 let g:neosnippet#snippets_directory = $HOME . '/.vim/snippets'
 
+let g:neocomplete#enable_at_startup = 1
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'perl' : $HOME.'/.vim/dict/perl.dict',
+        \ }
+
+
 " for snippets
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -131,3 +143,5 @@ hi IndentGuidesEven ctermbg=237
 au FileType coffee,ruby,javascript,python IndentGuidesEnable
 nmap <silent><Leader>ig <Plug>IndentGuidesToggle
 colorscheme default
+
+let g:vimfiler_as_default_explorer = 1
