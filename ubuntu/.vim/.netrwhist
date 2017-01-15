@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/meru'
+let g:netrw_dirhist_2='/home/meru/.vim'
+let g:netrw_dirhist_3='/home/meru/.vim/vundle'
+let g:netrw_dirhist_4='/home/meru/.vim'
+let g:netrw_dirhist_5='/home/meru/.vim/bundle'
+let g:netrw_dirhist_6='/home/meru/.vim/bundle/vundle'
+let g:netrw_dirhist_7='/home/meru'

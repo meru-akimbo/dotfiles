@@ -1,0 +1,153 @@
+set nocompatible               " be iMproved
+filetype off                   " required!
+autocmd FileType * set comments=
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'pangloss/vim-javascript'
+Bundle 'scrooloose/syntastic'
+
+Bundle 'petdance/vim-perl'
+Bundle 'hotchpotch/perldoc-vim'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'Shougo/neosnippet'
+Bundle 'thinca/vim-quickrun'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-rails'
+Bundle 'vim-coffee-script'
+Bundle 'davidhalter/jedi-vim'
+Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'Shougo/vimshell.vim'
+Bundle 'thinca/vim-localrc'
+Bundle 'derekwyatt/vim-scala'
+Bundle 'vim-jp/vim-go-extra'
+Bundle 'fatih/vim-go'
+Bundle 'Shougo/neosnippet-snippets'
+
+Bundle 'Shougo/vimfiler'
+Bundle 'Shougo/unite.vim'
+
+" js BDDツール
+Bundle 'claco/jasmine.vim'
+" indentの深さに色を付ける
+Bundle 'nathanaelkane/vim-indent-guides'
+
+filetype indent plugin on
+
+set encoding=utf-8
+syntax on
+set wildmenu
+set showcmd
+set backspace=indent,eol,start
+set nostartofline
+set ruler
+set laststatus=2
+set mouse=a
+set number
+set splitbelow
+set splitright
+set ignorecase
+set smartcase
+set confirm
+set visualbell
+set t_vb=
+
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set list
+set listchars=tab:>-,trail:-,eol:-,extends:»,precedes:«,nbsp:%
+
+
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <C-z> <Nop>
+
+autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+autocmd BufWritePre * :call RTrim()
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+autocmd FileType go set tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
+autocmd BufRead,BufNewFile *.ltsv set noexpandtab noautoindent
+
+
+let g:go_fmt_command = "goimports"
+
+function! RTrim()
+  let s:cursor = getpos(".")
+  if &filetype != 'markdown'
+    %s/\s\+$//e
+  endif
+  call setpos(".", s:cursor)
+endfunction
+
+
+autocmd FileType * setlocal formatoptions-=ro
+setlocal formatoptions-=r
+setlocal formatoptions-=o
+
+let g:acp_enableAtStartup = 0
+let g:neosnippet#snippets_directory = $HOME . '/.vim/snippets'
+
+let g:neocomplete#enable_at_startup = 1
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'perl' : $HOME.'/.vim/dict/perl.dict',
+        \ }
+
+
+" for snippets
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+"Rubyのオムニ補完を設定(ft-ruby-omni)
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+vmap <C-c> :w !xsel -ib<CR><CR>
+
+" vimにcoffeeファイルタイプを認識させる
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+" インデントを設定
+autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
+let g:quickrun_config = {}
+let g:quickrun_config['coffee'] = {'command' : 'coffee', 'exec' : ['%c -cbp %s']}
+autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
+
+
+"------------------------------------
+" jasmine.vim
+"------------------------------------
+" ファイルタイプを変更
+function! JasmineSetting()
+  au BufRead,BufNewFile *Helper.js,*Spec.js  set filetype=jasmine.javascript
+  au BufRead,BufNewFile *Helper.coffee,*Spec.coffee  set filetype=jasmine.coffee
+  au BufRead,BufNewFile,BufReadPre *Helper.coffee,*Spec.coffee  let b:quickrun_config = {'type' : 'coffee'}
+  call jasmine#load_snippets()
+  map <buffer> <leader>m :JasmineRedGreen<CR>
+  command! JasmineRedGreen :call jasmine#redgreen()
+  command! JasmineMake :call jasmine#make()
+endfunction
+au BufRead,BufNewFile,BufReadPre *.coffee,*.js call JasmineSetting()
+
+"------------------------------------
+" indent_guides
+"------------------------------------
+" インデントの深さに色を付ける
+let g:indent_guides_start_level=2
+let g:indent_guides_auto_colors=0
+let g:indent_guides_enable_on_vim_startup=0
+let g:indent_guides_color_change_percent=20
+let g:indent_guides_guide_size=1
+let g:indent_guides_space_guides=1
+
+hi IndentGuidesOdd  ctermbg=235
+hi IndentGuidesEven ctermbg=237
+au FileType coffee,ruby,javascript,python IndentGuidesEnable
+nmap <silent><Leader>ig <Plug>IndentGuidesToggle
+colorscheme default
+
+let g:vimfiler_as_default_explorer = 1
