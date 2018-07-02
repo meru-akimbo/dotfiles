@@ -20,12 +20,11 @@ Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'Shougo/vimshell.vim'
 Bundle 'thinca/vim-localrc'
 Bundle 'derekwyatt/vim-scala'
-Bundle 'vim-jp/vim-go-extra'
-Bundle 'fatih/vim-go'
 Bundle 'Shougo/neosnippet-snippets'
 
 Bundle 'Shougo/vimfiler'
 Bundle 'Shougo/unite.vim'
+Bundle 'fatih/vim-go'
 
 " js BDDツール
 Bundle 'claco/jasmine.vim'
@@ -64,7 +63,10 @@ nnoremap <C-z> <Nop>
 
 autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 autocmd BufWritePre * :call RTrim()
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
+"autocmd FileType go autocmd BufWritePre <buffer> GoImports
+autocmd FileType go set shiftwidth=8
+autocmd FileType go set softtabstop=8
+
 
 function! RTrim()
   let s:cursor = getpos(".")
@@ -82,7 +84,7 @@ setlocal formatoptions-=o
 let g:acp_enableAtStartup = 0
 let g:neosnippet#snippets_directory = $HOME . '/.vim/snippets'
 
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 0
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
